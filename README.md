@@ -1,1 +1,2 @@
-# clinical_data_management_with_SQL
+# clinical Data Management with SQL
+This project simulates the process of storing, querying, and managing clinical trial datasets with SQL
