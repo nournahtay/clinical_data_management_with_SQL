@@ -189,4 +189,65 @@ GROUP BY
 HAVING 
     COUNT(*) > 1;
 
+--Check for patients aged 30 - 50
+SELECT
+    patient_id,
+    first_name,
+    last_name,
+    date_of_birth,
+    enrollment_date,
+    CAST((julianday(enrollment_date) - julianday(date_of_birth)) / 365.25 AS INTEGER) AS age_at_enrollment
+FROM
+    Patients
+WHERE
+    age_at_enrollment BETWEEN 30 AND 50;
+
+--Check for patients with hemoglobin ≥ 13.0 g/dL
+SELECT 
+    Patients.patient_id,
+    first_name,
+    last_name,
+    Lab_Results.test_name,
+    Lab_Results.result_value,
+    Lab_Results.test_date
+FROM 
+    Patients
+JOIN 
+    Lab_Results ON Patients.patient_id = Lab_Results.patient_id
+WHERE 
+    Lab_Results.test_name = 'Hemoglobin'
+    AND Lab_Results.result_value >= 13.0;
+
+--Identify patient with severe adverse effects
+SELECT 
+    DISTINCT Patients.patient_id,
+    first_name,
+    last_name,
+    event_description,
+    severity
+FROM 
+    Patients
+JOIN 
+    Adverse_Events ON Patients.patient_id = Adverse_Events.patient_id
+WHERE 
+    severity = 'Severe';
+
+--Combined query
+SELECT 
+    p.patient_id,
+    p.first_name,
+    p.last_name
+FROM 
+    Patients p
+JOIN 
+    Lab_Results l ON p.patient_id = l.patient_id
+WHERE 
+    CAST((julianday(p.enrollment_date) - julianday(p.date_of_birth)) / 365.25 AS INTEGER) BETWEEN 30 AND 50
+    AND l.test_name = 'Hemoglobin'
+    AND l.result_value >= 13.0
+    AND p.patient_id NOT IN (
+        SELECT patient_id
+        FROM Adverse_Events
+        WHERE severity = 'Severe'
+    );
 
