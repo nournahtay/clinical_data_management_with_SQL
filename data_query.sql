@@ -143,5 +143,50 @@ JOIN
     Adverse_Events ON Patients.patient_id = Adverse_Events.patient_id
 WHERE 
     Adverse_Events.start_date BETWEEN Medications.start_date AND Medications.end_date
-    AND Medications.drug_name = 'Drug A';
+    AND Medications.drug_name = 'Drug A'
+
+--Identify missing lab results
+SELECT 
+    Patients.patient_id,
+    first_name,
+    last_name,
+    Visits.visit_id,
+    Visits.visit_date
+FROM 
+    Patients
+JOIN 
+    Visits ON Patients.patient_id = Visits.patient_id
+LEFT JOIN 
+    Lab_Results ON Visits.visit_id = Lab_Results.visit_id
+WHERE 
+    Lab_Results.result_id IS NULL;
+
+--Find adverse effects that took place before enrollment
+SELECT 
+    Patients.patient_id,
+    first_name,
+    last_name,
+    enrollment_date,
+    Adverse_Events.event_description,
+    Adverse_Events.start_date
+FROM 
+    Patients
+JOIN 
+    Adverse_Events ON Patients.patient_id = Adverse_Events.patient_id
+WHERE 
+    Adverse_Events.start_date < Patients.enrollment_date;
+
+--Check for duplicate visits
+SELECT 
+    patient_id,
+    visit_date,
+    visit_type,
+    COUNT(*) AS visit_count
+FROM 
+    Visits
+GROUP BY 
+    patient_id, visit_date, visit_type
+HAVING 
+    COUNT(*) > 1;
+
 
