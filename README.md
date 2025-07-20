@@ -24,6 +24,6 @@ cd clinical_sql_project
 sqlite3 clinical_trial.db
 
 ```
-###Simulating patient eligibility
+### Simulating patient eligibility
 This part queries data to ensure that patients are eligibile to participate in clinical trials. the criteria include:
 1. Age: 18-65
