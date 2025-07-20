@@ -1,4 +1,6 @@
-### Clinical Data Management with SQL
+## Clinical Data Management with SQL
+
+###Simulating the query of clinical trial data
 This mini project simulates the process of storing, querying, cleaning datasets from duplicates & missing values and managing clinical trial datasets with SQL. The data includes:
 1. patients data
 2. visits data
@@ -22,3 +24,6 @@ cd clinical_sql_project
 sqlite3 clinical_trial.db
 
 ```
+###Simulating patient eligibility
+This part queries data to ensure that patients are eligibile to participate in clinical trials. the criteria include:
+1. Age: 18-65
